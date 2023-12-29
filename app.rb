@@ -7,27 +7,45 @@ require "json"
 # Remember, when fetching params you're fetching the name of the dynamic route ex 
 # get(/:choices)
 # params.fetch("choices")
+# 
+# create a method called currencies
+# inside the currencires mehtod i want to 
+# set the raw data variable
+# parsed_data variable
+# and currency_keys variable
+# then return the currency_keys variable
+
+def currencies
+  api_key = ENV.fetch("EXCHANGE_RATE_KEY")
+  api_url = "http://api.exchangerate.host/list?access_key=#{api_key}"
+  raw_data = HTTP.get(api_url)
+  raw_data_string = raw_data.to_s
+  parsed_data = JSON.parse(raw_data_string)
+  currency_keys = parsed_data.fetch("currencies").keys
+  return currency_keys
+end
+
 
 # define a route
 get("/") do
 
 
   # build the API url, including the API key in the query string
-  api_key = ENV.fetch("EXCHANGE_RATE_KEY")
+  # api_key = ENV.fetch("EXCHANGE_RATE_KEY")
   
-  api_url = "http://api.exchangerate.host/list?access_key=#{api_key}"
+  # api_url = "http://api.exchangerate.host/list?access_key=#{api_key}"
 
   # use HTTP.get to retrieve the API information
-  raw_data = HTTP.get(api_url)
+  # raw_data = HTTP.get(api_url)
 
   # convert the raw request to a string
-  raw_data_string = raw_data.to_s
+  # raw_data_string = raw_data.to_s
 
   # convert the string to JSON
-  parsed_data = JSON.parse(raw_data_string)
+  # parsed_data = JSON.parse(raw_data_string)
 
   # get the symbols from the JSON
-  @symbols = parsed_data.fetch("currencies")
+  @symbols = currencies
 
   # render a view template where I show the symbols
   erb(:homepage)
@@ -37,17 +55,17 @@ get("/:from_currency") do
 
   @orignal_currency = params.fetch("from_currency")
 
-  api_key = ENV.fetch("EXCHANGE_RATE_KEY")
+  # api_key = ENV.fetch("EXCHANGE_RATE_KEY")
   
-  api_url = "http://api.exchangerate.host/list?access_key=#{api_key}"
+  # api_url = "http://api.exchangerate.host/list?access_key=#{api_key}"
 
-  raw_data = HTTP.get(api_url)
+  # raw_data = HTTP.get(api_url)
 
-  raw_data_string = raw_data.to_s
+  # raw_data_string = raw_data.to_s
 
-  parsed_data = JSON.parse(raw_data_string)
+  # parsed_data = JSON.parse(raw_data_string)
 
-  @symbols = parsed_data.fetch("currencies")
+  @symbols = currencies
 
 
   erb(:starting_currency)
