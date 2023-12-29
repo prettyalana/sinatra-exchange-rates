@@ -16,6 +16,7 @@ require "json"
 # then return the currency_keys variable
 
 def currencies
+  puts ENV
   api_key = ENV.fetch("EXCHANGE_RATE_KEY")
   api_url = "http://api.exchangerate.host/list?access_key=#{api_key}"
   raw_data = HTTP.get(api_url)
